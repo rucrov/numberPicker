@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textButtonT3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20/10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.847"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.535" />
+
+    <TextView
+        android:id="@+id/textButtonT2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="10/30"
+        app:layout_constraintBottom_toTopOf="@+id/textButtonT3"
+        app:layout_constraintEnd_toEndOf="@+id/textButtonT3"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/textButtonT3" />
+
+    <TextView
+        android:id="@+id/textButtonT1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="10/15"
+        app:layout_constraintBottom_toTopOf="@+id/textButtonT2"
+        app:layout_constraintEnd_toEndOf="@+id/textButtonT2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textButtonT2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:text="T1"
+        app:layout_constraintBottom_toBottomOf="@+id/textButtonT1"
+        app:layout_constraintEnd_toStartOf="@+id/textButtonT1"
+        app:layout_constraintTop_toTopOf="@+id/textButtonT1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:text="T2"
+        app:layout_constraintBottom_toBottomOf="@+id/textButtonT2"
+        app:layout_constraintEnd_toStartOf="@+id/textButtonT2"
+        app:layout_constraintTop_toTopOf="@+id/textButtonT2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:text="T3"
+        app:layout_constraintBottom_toBottomOf="@+id/textButtonT3"
+        app:layout_constraintEnd_toStartOf="@+id/textButtonT3"
+        app:layout_constraintTop_toTopOf="@+id/textButtonT3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/numberOfShots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:text="N"
+        app:layout_constraintBottom_toBottomOf="@+id/textButtonNumberBullet"
+        app:layout_constraintEnd_toStartOf="@+id/textButtonNumberBullet"
+        app:layout_constraintTop_toTopOf="@+id/textButtonNumberBullet"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textNs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:text="Ns"
+        app:layout_constraintBottom_toBottomOf="@+id/numberOfSeries"
+        app:layout_constraintEnd_toStartOf="@+id/numberOfSeries"
+        app:layout_constraintTop_toTopOf="@+id/numberOfSeries"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/numberOfSeries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:text="3/10"
+        app:layout_constraintBottom_toTopOf="@+id/textButtonT1"
+        app:layout_constraintEnd_toEndOf="@+id/textButtonT1"
+        app:layout_constraintStart_toStartOf="@+id/textButtonT1" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:text="smart"
+        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+        app:layout_constraintEnd_toStartOf="@+id/switch1"
+        app:layout_constraintTop_toTopOf="@+id/switch1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textButtonSmartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="1"
+        app:layout_constraintEnd_toEndOf="@+id/switch1"
+        app:layout_constraintHorizontal_bias="0.566"
+        app:layout_constraintStart_toStartOf="@+id/switch1"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="92dp"
+        android:text="t~"
+        app:layout_constraintBottom_toBottomOf="@+id/textButtonSmartTime"
+        app:layout_constraintEnd_toStartOf="@+id/textButtonSmartTime"
+        app:layout_constraintTop_toTopOf="@+id/textButtonSmartTime"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/textButtonT3"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/textButtonT3"
+        app:layout_constraintTop_toBottomOf="@+id/textButtonT3" />
+
+    <TextView
+        android:id="@+id/textButtonNumberBullet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="1"
+        app:layout_constraintBottom_toTopOf="@+id/numberOfSeries"
+        app:layout_constraintEnd_toEndOf="@+id/numberOfSeries"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="@+id/numberOfSeries" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
