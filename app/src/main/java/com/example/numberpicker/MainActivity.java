@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
-    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60,massSeriesFor60Bullet;
+    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60,massSeriesFor60Bullet,massSeriesFor50Bullet,massSeriesFor40Bullet,massSeriesFor30Bullet,massSeriesFor20Bullet,massSeriesFor10Bullet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonSmartTime = findViewById(R.id.textButtonSmartTime);
         dialog= new Dialog(MainActivity.this);
         mass = new String[]{"1","3","10","20","30","15"};
-        massSeriesFor60Bullet = new String[]{"1*60","2*30","3*20","4*15","6*10","12*5","20*3","30*2"};
+
         fillingArrays();
         textSaveValue = new String[]{"0","0"};
         Close = new View.OnClickListener() {
@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if(secondNumberPicker != null){
 
-                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()])+"/"+String.valueOf(secondNumberPicker.getDisplayedValues()[secondNumberPicker.getValue()]));
+                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()-firstNumberPicker.getMinValue()])+"/"+String.valueOf(secondNumberPicker.getDisplayedValues()[secondNumberPicker.getValue()-secondNumberPicker.getMinValue()]));
 
                 }else {
-                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()]));
+                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()-firstNumberPicker.getMinValue()]));
               }
                 dialog.dismiss();
                 secondNumberPicker=null;
@@ -64,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView=textButtonNumberBullet;
-                textSplit = String.valueOf(textButtonNumberBullet.getText()).split("/");
+                textSplit = String.valueOf(textButtonNumberBullet.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,0,5,getPositionForNumberPicker(mass,textSplit[0]),mass);
+                setNumberPicker(firstNumberPicker,0,5,massForNumberBullet);
+                setNumberPickerPosition(getPositionForNumberPicker(massForNumberBullet,textSplit[0],firstNumberPicker),firstNumberPicker);
             }
         });
 
@@ -74,9 +75,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView=numberOfSeries;
-                textSplit = String.valueOf(numberOfSeries.getText()).split("/");
+                textSplit = String.valueOf(numberOfSeries.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,3,7,getPositionForNumberPicker(massSeriesFor60Bullet,textSplit[0]),massSeriesFor60Bullet);
+                setNumberPicker(firstNumberPicker,0,6,massSeriesFor60Bullet);
+                setNumberPickerPosition(getPositionForNumberPicker(massSeriesFor60Bullet,textSplit[0],firstNumberPicker),firstNumberPicker);
             }
         });
 
@@ -87,8 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
                 textSplit = String.valueOf(textButtonT1.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
-                setNumberPicker(secondNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[1]),mass);
+                setNumberPicker(firstNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setNumberPicker(secondNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
 
 
             }
@@ -100,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
                 idTextView = textButtonT2;
                 textSplit = String.valueOf(textButtonT2.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
-                setNumberPicker(secondNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[1]),mass);
+                setNumberPicker(firstNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setNumberPicker(secondNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
             }
         });
 
@@ -111,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 idTextView=textButtonT3;
                 textSplit = String.valueOf(textButtonT3.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
-                setNumberPicker(secondNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[1]),mass);
+                setNumberPicker(firstNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setNumberPicker(secondNumberPicker,0,5,mass);
+                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
             }
         });
 
@@ -120,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView=textButtonSmartTime;
-                textSplit = String.valueOf(textButtonSmartTime.getText()).split("");
+                textSplit = String.valueOf(textButtonSmartTime.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,0,5,getPositionForNumberPicker(mass,textSplit[0]),mass);
+                setNumberPicker(firstNumberPicker,0,7,mass1To10);
+                setNumberPickerPosition(getPositionForNumberPicker(mass1To10,textSplit[0],firstNumberPicker),firstNumberPicker);
             }
         });
     }
@@ -150,11 +159,13 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void setNumberPicker(NumberPicker numberPicker, int minValue, int maxValue,int position,String[] mass){
+    private void setNumberPicker(NumberPicker numberPicker, int minValue, int maxValue,String[] mass){
         numberPicker.setMinValue(minValue);
         numberPicker.setMaxValue(maxValue);
-        numberPicker.setValue(position);
         numberPicker.setDisplayedValues(mass);
+    }
+    private void setNumberPickerPosition(int position,NumberPicker numberPicker){
+        numberPicker.setValue(position);
     }
 
     private  void createArray(String[] array, int firstElem, int lastElem,
@@ -182,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    private int getPositionForNumberPicker(String[] mass,String text){
+    private int getPositionForNumberPicker(String[] mass,String text,NumberPicker numberPicker){
         for (int i=0;i<mass.length;i++){
             if (text.equals(mass[i])){
-                return i;
+                return i+numberPicker.getMinValue();
             }
         }
         return 0;
@@ -196,6 +207,13 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0;i<massForNumberBullet.length;i++){
             massForNumberBullet[i] = String.valueOf(60-i*10);
         }
+        massSeriesFor60Bullet = new String[]{"1×60","2×30","3×20","4×15","6×10","12×5","20×3","30×2"};
+        massSeriesFor50Bullet = new String[]{"1×50","2×25","5×10","10×5","25×2"};
+        massSeriesFor40Bullet = new String[]{"1×40","2×20","4×10","8×5","20×2"};
+        massSeriesFor30Bullet = new String[]{"1×30","2×15","3×10","6×5","10×3","15×2"};
+        massSeriesFor20Bullet = new String[]{"1×20","2×10","4×5","10×2"};
+        massSeriesFor10Bullet = new String[]{"1×10","2×5","5×2"};
+
 
          mass10To180 = new String[12];
          createArray(mass10To180,10,90,10,0,8);
