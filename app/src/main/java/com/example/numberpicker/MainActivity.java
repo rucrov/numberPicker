@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
-    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60;
+    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60,massSeriesFor60Bullet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         numberOfSeries=findViewById(R.id.numberOfSeries);
         textButtonSmartTime = findViewById(R.id.textButtonSmartTime);
         dialog= new Dialog(MainActivity.this);
-        mass = new String[]{"3","10","20","30","15","1"};
+        mass = new String[]{"1","3","10","20","30","15"};
+        massSeriesFor60Bullet = new String[]{"1*60","2*30","3*20","4*15","6*10","12*5","20*3","30*2"};
         fillingArrays();
         textSaveValue = new String[]{"0","0"};
         Close = new View.OnClickListener() {
@@ -44,16 +45,17 @@ public class MainActivity extends AppCompatActivity {
         Save = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] arrayFirstNumberPicker = firstNumberPicker.getDisplayedValues();
+
                 if(secondNumberPicker != null){
 
-                  String[] arraySecondNumberPicker = secondNumberPicker.getDisplayedValues();
-                  idTextView.setText(String.valueOf(arrayFirstNumberPicker[firstNumberPicker.getValue()])+"/"+String.valueOf(arraySecondNumberPicker[secondNumberPicker.getValue()]));
+                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()])+"/"+String.valueOf(secondNumberPicker.getDisplayedValues()[secondNumberPicker.getValue()]));
 
                 }else {
-                  idTextView.setText(String.valueOf(arrayFirstNumberPicker[firstNumberPicker.getValue()]));
+                  idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()]));
               }
                 dialog.dismiss();
+                secondNumberPicker=null;
+                firstNumberPicker=null;
             }
         };
 
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonNumberBullet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView=textButtonNumberBullet;
                 textSplit = String.valueOf(textButtonNumberBullet.getText()).split("/");
                 openDialogOneNumberPicker();
                 setNumberPicker(firstNumberPicker,0,5,getPositionForNumberPicker(mass,textSplit[0]),mass);
@@ -70,9 +73,10 @@ public class MainActivity extends AppCompatActivity {
         numberOfSeries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView=numberOfSeries;
                 textSplit = String.valueOf(numberOfSeries.getText()).split("/");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
+                setNumberPicker(firstNumberPicker,3,7,getPositionForNumberPicker(massSeriesFor60Bullet,textSplit[0]),massSeriesFor60Bullet);
             }
         });
 
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonT2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView = textButtonT2;
                 textSplit = String.valueOf(textButtonT2.getText()).split("/");
                 openDialogTwoNumberPicker();
                 setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
@@ -103,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonT3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView=textButtonT3;
                 textSplit = String.valueOf(textButtonT3.getText()).split("/");
                 openDialogTwoNumberPicker();
                 setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
@@ -113,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonSmartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView=textButtonSmartTime;
                 textSplit = String.valueOf(textButtonSmartTime.getText()).split("");
                 openDialogOneNumberPicker();
                 setNumberPicker(firstNumberPicker,0,5,getPositionForNumberPicker(mass,textSplit[0]),mass);
