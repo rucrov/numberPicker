@@ -13,9 +13,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     TextView textButtonT1,textButtonT2,textButtonT3,textButtonNumberBullet,numberOfSeries,textButtonSmartTime;
-
+    View.OnClickListener Close, Save;
     Dialog dialog;
-    String[] textSplit;
+    String[] textSplit,textSaveValue;
+    TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
     String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60;
@@ -33,6 +34,28 @@ public class MainActivity extends AppCompatActivity {
         dialog= new Dialog(MainActivity.this);
         mass = new String[]{"3","10","20","30","15","1"};
         fillingArrays();
+        textSaveValue = new String[]{"0","0"};
+        Close = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        };
+        Save = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] arrayFirstNumberPicker = firstNumberPicker.getDisplayedValues();
+                if(secondNumberPicker != null){
+
+                  String[] arraySecondNumberPicker = secondNumberPicker.getDisplayedValues();
+                  idTextView.setText(String.valueOf(arrayFirstNumberPicker[firstNumberPicker.getValue()])+"/"+String.valueOf(arraySecondNumberPicker[secondNumberPicker.getValue()]));
+
+                }else {
+                  idTextView.setText(String.valueOf(arrayFirstNumberPicker[firstNumberPicker.getValue()]));
+              }
+                dialog.dismiss();
+            }
+        };
 
 
         textButtonNumberBullet.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +79,14 @@ public class MainActivity extends AppCompatActivity {
         textButtonT1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                idTextView = textButtonT1;
+
                 textSplit = String.valueOf(textButtonT1.getText()).split("/");
                 openDialogTwoNumberPicker();
                 setNumberPicker(firstNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[0]),mass);
                 setNumberPicker(secondNumberPicker,0,4,getPositionForNumberPicker(mass,textSplit[1]),mass);
+
+
             }
         });
 
@@ -100,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         secondNumberPicker=dialog.findViewById(R.id.secondNumberPicker);
         buttonCancel=dialog.findViewById(R.id.cancelButton);
         buttonSave=dialog.findViewById(R.id.saveButton);
+        buttonCancel.setOnClickListener(Close);
+        buttonSave.setOnClickListener(Save);
         dialog.show();
     }
 
@@ -109,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
         firstNumberPicker=dialog.findViewById(R.id.oneNumberPicker);
         buttonCancel=dialog.findViewById(R.id.oneCancelButton);
         buttonSave=dialog.findViewById(R.id.oneSaveButton);
+        buttonCancel.setOnClickListener(Close);
+        buttonSave.setOnClickListener(Save);
         dialog.show();
     }
 
