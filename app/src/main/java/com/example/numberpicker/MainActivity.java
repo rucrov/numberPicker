@@ -157,7 +157,31 @@ public class MainActivity extends AppCompatActivity {
         numberPicker.setDisplayedValues(mass);
     }
 
+    private  void createArray(String[] array, int firstElem, int lastElem,
+                              int inc, int fistNumber, int arraySize){
 
+        for(int i=fistNumber;i<array.length;i++){
+            if(firstElem>lastElem || i > arraySize ){
+                break;
+            }
+            array[i]= String.valueOf(firstElem);
+            firstElem+=inc;
+
+        }
+    }
+
+    private  void createArray(String[] array, float firstElem, float lastElem,
+                                   float inc, int fistNumber, int arraySize){
+
+        for(int i=fistNumber;i<array.length;i++){
+            if(Math.floor(firstElem * 10) / 10>lastElem || i > arraySize ){
+                break;
+            }
+            array[i]= String.valueOf(Math.floor(firstElem * 10) / 10);
+            firstElem+=inc;
+
+        }
+    }
     private int getPositionForNumberPicker(String[] mass,String text){
         for (int i=0;i<mass.length;i++){
             if (text.equals(mass[i])){
@@ -168,9 +192,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillingArrays(){
-        String[] massForNumberBullet = new String[6];
+      massForNumberBullet = new String[6];
         for (int i=0;i<massForNumberBullet.length;i++){
             massForNumberBullet[i] = String.valueOf(60-i*10);
         }
+
+         mass10To180 = new String[12];
+         createArray(mass10To180,10,90,10,0,8);
+         createArray(mass10To180,120,180,30,9,12);
+
+         mass10To60  = new String[20];
+         createArray(mass10To60,1,9,1,0,8);
+         createArray(mass10To60,10,60,5,9,20);
+
+         mass2To30 = new String[29];
+         createArray(mass2To30,2,30,1,0,29);
+
+         mass1To10 = new String[10];
+         createArray(mass1To10,1,10,1,0,10);
+
+         mass30To300 = new String[19];
+         createArray(mass30To300,30,300,30,0,10);
+
+         customMass05To5forT2 =  new String[19];
+         createArray(customMass05To5forT2,0.1f,0.6f,0.1f,0,7);
+         createArray(customMass05To5forT2,0.8f,1.2f,0.2f,8,11);
+         customMass05To5forT2[12] = "1.5";
+         customMass05To5forT2[13] = "1.7";
+         customMass05To5forT2[14] = "2.0";
+         customMass05To5forT2[15] = "2.5";
+         createArray(customMass05To5forT2,3.0f,5.0f,1.0f,16,19);
+
+
+         customMass05To10ForT3 = new String[27];
+         createArray(customMass05To10ForT3,0.5f,1.6f,0.1f,0,11);
+         createArray(customMass05To10ForT3,1.8f,2.2f,0.2f,12,14);
+         createArray(customMass05To10ForT3,2.5f,4.0f,0.5f,15,19);
+         createArray(customMass05To10ForT3,5.0f,10.0f,1.0f,20,25);
+
+        mass1To60 = new String[19];
+        createArray(mass1To60,1,10,1,0,10);
+        createArray(mass1To60,15,40,5,11,16);
+        createArray(mass1To60,50,60,10,17,18);
+
+
     }
 }
