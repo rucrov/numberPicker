@@ -2,6 +2,7 @@ package com.example.numberpicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,14 +13,20 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    TextView textButtonT1,textButtonT2,textButtonT3,textButtonNumberBullet,numberOfSeries,textButtonSmartTime;
+    TextView textButtonT1,textButtonT2,textButtonT3,textButtonNumberBullet,numberOfSeries,textButtonSmartTime,timer;
     View.OnClickListener Close, Save;
     Dialog dialog;
+    int mode=0;
+    float  textFt1,textSt1,textFt2,textSt2,textFt3,textSt3;
+    int seriesCount,shotInSeries,bulletCount;
     String[] textSplit,textSaveValue;
     TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
-    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass05To5forT2,customMass05To10ForT3,mass1To60,massSeriesFor60Bullet,massSeriesFor50Bullet,massSeriesFor40Bullet,massSeriesFor30Bullet,massSeriesFor20Bullet,massSeriesFor10Bullet;
+    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass01To5forT2,
+            customMass05To10ForT3,mass1To60,massSeriesFor60Bullet,massSeriesFor50Bullet,massSeriesFor40Bullet,massSeriesFor30Bullet,
+            massSeriesFor20Bullet,massSeriesFor10Bullet;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
         textButtonNumberBullet = findViewById(R.id.textButtonNumberBullet);
         numberOfSeries=findViewById(R.id.numberOfSeries);
         textButtonSmartTime = findViewById(R.id.textButtonSmartTime);
+        timer= findViewById(R.id.timer);
         dialog= new Dialog(MainActivity.this);
         mass = new String[]{"1","3","10","20","30","15"};
-
+        setTimerTime(mode);
         fillingArrays();
         textSaveValue = new String[]{"0","0"};
         Close = new View.OnClickListener() {
@@ -53,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                   idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()-firstNumberPicker.getMinValue()]));
               }
+
                 dialog.dismiss();
                 secondNumberPicker=null;
                 firstNumberPicker=null;
+                setTimerTime(mode);
             }
         };
 
@@ -202,6 +212,47 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    private void setTimerTime(int mode){
+        bulletCount = Integer.valueOf(String.valueOf(textButtonNumberBullet.getText()));
+        String[] splitText  = String.valueOf(numberOfSeries.getText()).split("×");
+            seriesCount = Integer.valueOf(splitText[0]);
+            shotInSeries = Integer.valueOf(splitText[1]);
+
+        splitText = String.valueOf(textButtonT1.getText()).split("/");
+        if (mode==1||mode==2) {
+            textFt1 = Integer.valueOf(splitText[0]);
+            textSt1 = 0;
+        } else {
+            textFt1 = Integer.valueOf(splitText[0]);
+            textSt1 = Integer.valueOf(splitText[1]);
+        }
+
+        splitText = String.valueOf(textButtonT2.getText()).split("/");
+        textFt2 = Float.valueOf(splitText[0]);
+        textSt2 = Float.valueOf(splitText[1]);
+
+        splitText = String.valueOf(textButtonT3.getText()).split("/");
+        textFt3 = Float.valueOf(splitText[0]);
+        textSt3 = Float.valueOf(splitText[1]);
+
+        float time = (textFt1+textFt2+textFt3+(textSt1+textSt2+textSt3)*(shotInSeries-1))*seriesCount;
+        int hours = (int) ((time / (60 * 60)) % 24);
+        int minute = (int) ((time / 60) % 60);
+        int seconds = (int) time / 1 % 60;
+
+
+        if (hours>0&&minute==0)          //вывод только часов если минуты = 0
+        timer.setText( String.format("%dh",hours));
+        else if (hours==0&&seconds==0)              //вывод только минут если часы и секунды = 0
+            timer.setText( String.format("%dm",minute));
+        else if (hours==0&&minute==0)               //вывод только секунд если часы и минуты = 0
+            timer.setText( String.format("%ds",seconds));
+        else if (hours==0)
+            timer.setText( String.format("%dm %ds",minute,seconds));
+        else if (hours>0)
+            timer.setText( String.format("%dh %dm",hours,minute));
+    }
+
     private void fillingArrays(){
       massForNumberBullet = new String[6];
         for (int i=0;i<massForNumberBullet.length;i++){
@@ -232,14 +283,14 @@ public class MainActivity extends AppCompatActivity {
          mass30To300 = new String[19];
          createArray(mass30To300,30,300,30,0,10);
 
-         customMass05To5forT2 =  new String[19];
-         createArray(customMass05To5forT2,0.1f,0.6f,0.1f,0,7);
-         createArray(customMass05To5forT2,0.8f,1.2f,0.2f,8,11);
-         customMass05To5forT2[12] = "1.5";
-         customMass05To5forT2[13] = "1.7";
-         customMass05To5forT2[14] = "2.0";
-         customMass05To5forT2[15] = "2.5";
-         createArray(customMass05To5forT2,3.0f,5.0f,1.0f,16,19);
+         customMass01To5forT2 =  new String[19];
+         createArray(customMass01To5forT2,0.1f,0.6f,0.1f,0,7);
+         createArray(customMass01To5forT2,0.8f,1.2f,0.2f,8,11);
+         customMass01To5forT2[12] = "1.5";
+         customMass01To5forT2[13] = "1.7";
+         customMass01To5forT2[14] = "2.0";
+         customMass01To5forT2[15] = "2.5";
+         createArray(customMass01To5forT2,3.0f,5.0f,1.0f,16,19);
 
 
          customMass05To10ForT3 = new String[27];

@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:text="2×30"
+        android:text="1×10"
         app:layout_constraintBottom_toTopOf="@+id/textButtonT1"
         app:layout_constraintEnd_toEndOf="@+id/textButtonT1"
         app:layout_constraintStart_toStartOf="@+id/textButtonT1" />
@@ -148,7 +148,10 @@
         app:layout_constraintEnd_toEndOf="@+id/textButtonT3"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="@+id/textButtonT3"
-        app:layout_constraintTop_toBottomOf="@+id/textButtonT3" />
+        app:layout_constraintTop_toBottomOf="@+id/textButtonT3"
+        >
+
+    </Switch>
 
     <TextView
         android:id="@+id/textButtonNumberBullet"
@@ -162,5 +165,26 @@
         app:layout_constraintEnd_toEndOf="@+id/numberOfSeries"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="@+id/numberOfSeries" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="time"
+        app:layout_constraintEnd_toEndOf="@+id/textButtonSmartTime"
+        app:layout_constraintStart_toStartOf="@+id/textButtonSmartTime"
+        app:layout_constraintTop_toBottomOf="@+id/textButtonSmartTime" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:text="timer"
+        app:layout_constraintBottom_toBottomOf="@+id/timer"
+        app:layout_constraintEnd_toStartOf="@+id/timer"
+        app:layout_constraintTop_toTopOf="@+id/timer"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
