@@ -14,12 +14,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     TextView textButtonT1,textButtonT2,textButtonT3,textButtonNumberBullet,numberOfSeries,textButtonSmartTime,timer;
-    View.OnClickListener Close, Save;
+    View.OnClickListener Close, Save,customSave;
     Dialog dialog;
     int mode=0;
     float  textFt1,textSt1,textFt2,textSt2,textFt3,textSt3;
-    int seriesCount,shotInSeries,bulletCount;
-    String[] textSplit,textSaveValue;
+    int seriesCount,shotInSeries,bulletCount,minValue,maxValue;
+    String[] textSplit,textSaveValue,displayValue;
     TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setTimerTime(mode);
         fillingArrays();
         textSaveValue = new String[]{"0","0"};
+
         Close = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +69,19 @@ public class MainActivity extends AppCompatActivity {
                 setTimerTime(mode);
             }
         };
+        customSave = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                idTextView.setText(String.valueOf(firstNumberPicker.getDisplayedValues()[firstNumberPicker.getValue()-firstNumberPicker.getMinValue()]));
+                dialog.dismiss();
+                setSettingsSeriesNumberPicker();
+                secondNumberPicker=null;
+                firstNumberPicker=null;
+
+
+                setTimerTime(mode);
+            }
+        };
 
 
         textButtonNumberBullet.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 idTextView=numberOfSeries;
                 textSplit = String.valueOf(numberOfSeries.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,0,6,massSeriesFor60Bullet);
-                setNumberPickerPosition(getPositionForNumberPicker(massSeriesFor60Bullet,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setNumberPicker(firstNumberPicker,minValue,maxValue,displayValue);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValue,textSplit[0],firstNumberPicker),firstNumberPicker);
             }
         });
 
@@ -96,14 +110,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView = textButtonT1;
-
-                textSplit = String.valueOf(textButtonT1.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
-                setNumberPicker(secondNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
+                if (mode==1||mode==2) {
+                    textSplit = String.valueOf(numberOfSeries.getText()).split(" ");
+                    setNumberPicker(firstNumberPicker, 0, 5, mass);
+                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[0], firstNumberPicker), firstNumberPicker);
 
+                }else {
+                    textSplit = String.valueOf(textButtonT1.getText()).split("/");
+                    setNumberPicker(firstNumberPicker, 0, 5, mass);
+                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[0], firstNumberPicker), firstNumberPicker);
+                    setNumberPicker(secondNumberPicker, 0, 5, mass);
+                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[1], secondNumberPicker), secondNumberPicker);
+                }
 
             }
         });
@@ -165,6 +184,10 @@ public class MainActivity extends AppCompatActivity {
         buttonCancel=dialog.findViewById(R.id.oneCancelButton);
         buttonSave=dialog.findViewById(R.id.oneSaveButton);
         buttonCancel.setOnClickListener(Close);
+        if (idTextView==textButtonNumberBullet) {
+            buttonSave.setOnClickListener(customSave);
+        }
+        else
         buttonSave.setOnClickListener(Save);
         dialog.show();
     }
@@ -212,6 +235,49 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    private void setSettingsSeriesNumberPicker(){
+        switch (String.valueOf(textButtonNumberBullet.getText())){
+            case "60":
+                numberOfSeries.setText("1×60");
+                minValue=0;
+                maxValue=7;
+                displayValue = massSeriesFor60Bullet;
+                break;
+
+            case "50":
+                numberOfSeries.setText("1×50");
+                minValue=0;
+                maxValue=4;
+                displayValue = massSeriesFor50Bullet;
+                break;
+            case "40":
+                numberOfSeries.setText("1×40");
+                minValue=0;
+                maxValue=4;
+                displayValue = massSeriesFor40Bullet;
+                break;
+            case "30":
+                numberOfSeries.setText("1×30");
+                minValue=0;
+                maxValue=5;
+                displayValue = massSeriesFor30Bullet;
+                break;
+            case "20":
+                numberOfSeries.setText("1×20");
+                minValue=0;
+                maxValue=3;
+                displayValue = massSeriesFor20Bullet;
+                break;
+            case "10":
+                numberOfSeries.setText("1×10");
+                minValue=0;
+                maxValue=2;
+                displayValue = massSeriesFor10Bullet;
+                break;
+        }
+
+    }
+
     private void setTimerTime(int mode){
         bulletCount = Integer.valueOf(String.valueOf(textButtonNumberBullet.getText()));
         String[] splitText  = String.valueOf(numberOfSeries.getText()).split("×");
@@ -252,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
         else if (hours>0)
             timer.setText( String.format("%dh %dm",hours,minute));
     }
+
 
     private void fillingArrays(){
       massForNumberBullet = new String[6];
