@@ -7,10 +7,13 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     TextView textButtonT1,textButtonT2,textButtonT3,textButtonNumberBullet,numberOfSeries,textButtonSmartTime,timer;
@@ -18,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
     Dialog dialog;
     int mode=0;
     float  textFt1,textSt1,textFt2,textSt2,textFt3,textSt3;
-    int seriesCount,shotInSeries,bulletCount,minValue,maxValue;
-    String[] textSplit,textSaveValue,displayValue;
+    int seriesCount,shotInSeries,bulletCount,minValueF,maxValueF,minValueS,maxValueS;
+    String[] textSplit,textSaveValue,displayValueF, displayValueS;             //F = first, S = second
     TextView idTextView;
     NumberPicker firstNumberPicker,secondNumberPicker;
     Button buttonCancel,buttonSave;
-    String[] mass,massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass01To5forT2,
+    String[] massForNumberBullet,mass10To180,mass10To60,mass2To30,mass1To10,mass30To300,customMass01To5forT2,
             customMass05To10ForT3,mass1To60,massSeriesFor60Bullet,massSeriesFor50Bullet,massSeriesFor40Bullet,massSeriesFor30Bullet,
             massSeriesFor20Bullet,massSeriesFor10Bullet;
     @SuppressLint("MissingInflatedId")
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         textButtonSmartTime = findViewById(R.id.textButtonSmartTime);
         timer= findViewById(R.id.timer);
         dialog= new Dialog(MainActivity.this);
-        mass = new String[]{"1","3","10","20","30","15"};
+        checkOnOffSmartMode();
         setTimerTime(mode);
         fillingArrays();
         textSaveValue = new String[]{"0","0"};
@@ -77,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 setSettingsSeriesNumberPicker();
                 secondNumberPicker=null;
                 firstNumberPicker=null;
-
-
                 setTimerTime(mode);
             }
         };
@@ -101,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
                 idTextView=numberOfSeries;
                 textSplit = String.valueOf(numberOfSeries.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,minValue,maxValue,displayValue);
-                setNumberPickerPosition(getPositionForNumberPicker(displayValue,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setSettingsForNumberPicker(idTextView);
+                setNumberPicker(firstNumberPicker,minValueF,maxValueF,displayValueF);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueF,textSplit[0],firstNumberPicker),firstNumberPicker);
             }
         });
 
@@ -110,18 +112,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView = textButtonT1;
-                openDialogTwoNumberPicker();
+
+
                 if (mode==1||mode==2) {
-                    textSplit = String.valueOf(numberOfSeries.getText()).split(" ");
-                    setNumberPicker(firstNumberPicker, 0, 5, mass);
-                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[0], firstNumberPicker), firstNumberPicker);
+                    openDialogOneNumberPicker();
+                    setSettingsForNumberPicker(idTextView);
+                    textSplit = String.valueOf(textButtonT1.getText()).split(" ");
+                    setNumberPicker(firstNumberPicker, minValueF, maxValueF, displayValueF);
+                    setNumberPickerPosition(getPositionForNumberPicker(displayValueF, textSplit[0], firstNumberPicker), firstNumberPicker);
 
                 }else {
+                    openDialogTwoNumberPicker();
+                    setSettingsForNumberPicker(idTextView);
                     textSplit = String.valueOf(textButtonT1.getText()).split("/");
-                    setNumberPicker(firstNumberPicker, 0, 5, mass);
-                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[0], firstNumberPicker), firstNumberPicker);
-                    setNumberPicker(secondNumberPicker, 0, 5, mass);
-                    setNumberPickerPosition(getPositionForNumberPicker(mass, textSplit[1], secondNumberPicker), secondNumberPicker);
+                    setNumberPicker(firstNumberPicker, minValueF, maxValueF, displayValueF);
+                    setNumberPickerPosition(getPositionForNumberPicker(displayValueF, textSplit[0], firstNumberPicker), firstNumberPicker);
+                    setNumberPicker(secondNumberPicker, minValueS, maxValueS, displayValueS);
+                    setNumberPickerPosition(getPositionForNumberPicker(displayValueS, textSplit[1], secondNumberPicker), secondNumberPicker);
+
                 }
 
             }
@@ -133,10 +141,11 @@ public class MainActivity extends AppCompatActivity {
                 idTextView = textButtonT2;
                 textSplit = String.valueOf(textButtonT2.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
-                setNumberPicker(secondNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
+                setSettingsForNumberPicker(idTextView);
+                setNumberPicker(firstNumberPicker, minValueF, maxValueF, displayValueF);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueF, textSplit[0], firstNumberPicker), firstNumberPicker);
+                setNumberPicker(secondNumberPicker, minValueS, maxValueS, displayValueS);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueS, textSplit[1], secondNumberPicker), secondNumberPicker);
             }
         });
 
@@ -146,10 +155,11 @@ public class MainActivity extends AppCompatActivity {
                 idTextView=textButtonT3;
                 textSplit = String.valueOf(textButtonT3.getText()).split("/");
                 openDialogTwoNumberPicker();
-                setNumberPicker(firstNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[0],firstNumberPicker),firstNumberPicker);
-                setNumberPicker(secondNumberPicker,0,5,mass);
-                setNumberPickerPosition(getPositionForNumberPicker(mass,textSplit[1],secondNumberPicker),secondNumberPicker);
+                setSettingsForNumberPicker(idTextView);
+                setNumberPicker(firstNumberPicker, minValueF, maxValueF, displayValueF);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueF, textSplit[0], firstNumberPicker), firstNumberPicker);
+                setNumberPicker(secondNumberPicker, minValueS, maxValueS, displayValueS);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueS, textSplit[1], secondNumberPicker), secondNumberPicker);
             }
         });
 
@@ -157,10 +167,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 idTextView=textButtonSmartTime;
-                textSplit = String.valueOf(textButtonSmartTime.getText()).split(" ");
                 openDialogOneNumberPicker();
-                setNumberPicker(firstNumberPicker,0,7,mass1To10);
-                setNumberPickerPosition(getPositionForNumberPicker(mass1To10,textSplit[0],firstNumberPicker),firstNumberPicker);
+                setSettingsForNumberPicker(idTextView);
+                textSplit = String.valueOf(textButtonSmartTime.getText()).split(" ");
+                setNumberPicker(firstNumberPicker, minValueF, maxValueF, displayValueF);
+                setNumberPickerPosition(getPositionForNumberPicker(displayValueF, textSplit[0], firstNumberPicker), firstNumberPicker);
             }
         });
     }
@@ -177,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private void openDialogOneNumberPicker(){
         dialog.setContentView(R.layout.one_number_picker);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -239,40 +251,22 @@ public class MainActivity extends AppCompatActivity {
         switch (String.valueOf(textButtonNumberBullet.getText())){
             case "60":
                 numberOfSeries.setText("1×60");
-                minValue=0;
-                maxValue=7;
-                displayValue = massSeriesFor60Bullet;
                 break;
 
             case "50":
                 numberOfSeries.setText("1×50");
-                minValue=0;
-                maxValue=4;
-                displayValue = massSeriesFor50Bullet;
                 break;
             case "40":
                 numberOfSeries.setText("1×40");
-                minValue=0;
-                maxValue=4;
-                displayValue = massSeriesFor40Bullet;
                 break;
             case "30":
                 numberOfSeries.setText("1×30");
-                minValue=0;
-                maxValue=5;
-                displayValue = massSeriesFor30Bullet;
                 break;
             case "20":
                 numberOfSeries.setText("1×20");
-                minValue=0;
-                maxValue=3;
-                displayValue = massSeriesFor20Bullet;
                 break;
             case "10":
                 numberOfSeries.setText("1×10");
-                minValue=0;
-                maxValue=2;
-                displayValue = massSeriesFor10Bullet;
                 break;
         }
 
@@ -319,8 +313,147 @@ public class MainActivity extends AppCompatActivity {
             timer.setText( String.format("%dh %dm",hours,minute));
     }
 
+    private void setSettingsForNumberPicker(TextView idTextView){
+        if (getResources().getResourceEntryName(idTextView.getId()).equals("numberOfSeries")) {
+            switch (String.valueOf(textButtonNumberBullet.getText())) {
+
+                case "60":
+                    minValueF=0;
+                    maxValueF=7;
+                    displayValueF = massSeriesFor60Bullet;
+                    break;
+
+                case "50":
+                    minValueF=0;
+                    maxValueF=4;
+                    displayValueF = massSeriesFor50Bullet;
+                    break;
+                case "40":
+                    minValueF=0;
+                    maxValueF=4;
+                    displayValueF = massSeriesFor40Bullet;
+                    break;
+                case "30":
+                    minValueF=0;
+                    maxValueF=5;
+                    displayValueF = massSeriesFor30Bullet;
+                    break;
+                case "20":
+                    minValueF=0;
+                    maxValueF=3;
+                    displayValueF = massSeriesFor20Bullet;
+                    break;
+                case "10":
+                    minValueF=0;
+                    maxValueF=2;
+                    displayValueF = massSeriesFor10Bullet;
+                    break;
+
+            }
+        }
+
+        else if (mode==0||mode==3||mode==4){
+            switch (getResources().getResourceEntryName(idTextView.getId())){
+                case "textButtonT1":
+                        minValueF = 0;
+                        maxValueF =11;
+                        displayValueF= mass10To180;
+
+                        minValueS =0;
+                        maxValueS =10 ;
+                        displayValueS = mass10To60;
+
+                    break;
+                case "textButtonT2":
+                    minValueF = 0;
+                    maxValueF =28;
+                    displayValueF= mass2To30;
+
+                    minValueS =0;
+                    maxValueS =28 ;
+                    displayValueS = mass2To30;
+                break;
+
+                case "textButtonT3":
+                    minValueF = 0;
+                    maxValueF =18;
+                    displayValueF= mass2To30;
+
+                    minValueS =0;
+                    maxValueS =18;
+                    displayValueS = mass2To30;
+                    break;
+
+                case "textButtonSmartTime":
+                        if (mode==3) {
+                            minValueF = 0;
+                            maxValueF = 17;
+                            displayValueF = mass1To60;
+
+                        }
+                        else if (mode==4){
+                            minValueF = 0;
+                            maxValueF = 7;
+                            displayValueF = mass1To60;
+                        }
+                          break;
+            }
+        }
+        else if (mode==1||mode==2){
+            switch (getResources().getResourceEntryName(idTextView.getId())){
+                case "textButtonT1":
+                    minValueF = 0;
+                    maxValueF =9;
+                    displayValueF= mass30To300;
+
+                    break;
+                case "textButtonT2":
+                    if (mode==1){
+                    minValueF = 0;
+                    maxValueF =28;
+                    displayValueF= mass2To30;
+
+                    minValueS =0;
+                    maxValueS =28 ;
+                    displayValueS = mass2To30;
+                    }
+                    else if (mode==2){
+                        minValueF = 0;
+                        maxValueF =28;
+                        displayValueF= mass2To30;
+
+                        minValueS =0;
+                        maxValueS =15 ;
+                        displayValueS = customMass01To5forT2;
+                    }
+                    break;
+
+                case "textButtonT3":
+                    if (mode==1) {
+                        minValueF = 0;
+                        maxValueF = 9;
+                        displayValueF = mass1To10;
+
+                        minValueS = 0;
+                        maxValueS = 9;
+                        displayValueS = mass1To10;
+                    }
+                    else if (mode==2){
+                        minValueF = 0;
+                        maxValueF =9;
+                        displayValueF= mass1To10;
+
+                        minValueS =0;
+                        maxValueS =23 ;
+                        displayValueS = customMass01To5forT2;
+                    }
+                    break;
+            }
+        }
+    }
 
     private void fillingArrays(){
+
       massForNumberBullet = new String[6];
         for (int i=0;i<massForNumberBullet.length;i++){
             massForNumberBullet[i] = String.valueOf(60-i*10);
@@ -337,9 +470,8 @@ public class MainActivity extends AppCompatActivity {
          createArray(mass10To180,10,90,10,0,8);
          createArray(mass10To180,120,180,30,9,12);
 
-         mass10To60  = new String[20];
-         createArray(mass10To60,1,9,1,0,8);
-         createArray(mass10To60,10,60,5,9,20);
+         mass10To60  = new String[11];
+         createArray(mass10To60,10,60,5,0,11);
 
          mass2To30 = new String[29];
          createArray(mass2To30,2,30,1,0,29);
@@ -347,30 +479,41 @@ public class MainActivity extends AppCompatActivity {
          mass1To10 = new String[10];
          createArray(mass1To10,1,10,1,0,10);
 
-         mass30To300 = new String[19];
+         mass30To300 = new String[10];
          createArray(mass30To300,30,300,30,0,10);
 
-         customMass01To5forT2 =  new String[19];
-         createArray(customMass01To5forT2,0.1f,0.6f,0.1f,0,7);
-         createArray(customMass01To5forT2,0.8f,1.2f,0.2f,8,11);
-         customMass01To5forT2[12] = "1.5";
-         customMass01To5forT2[13] = "1.7";
-         customMass01To5forT2[14] = "2.0";
-         customMass01To5forT2[15] = "2.5";
-         createArray(customMass01To5forT2,3.0f,5.0f,1.0f,16,19);
+         customMass01To5forT2 =  new String[16];
+         createArray(customMass01To5forT2,0.1f,0.6f,0.1f,0,6);
+         createArray(customMass01To5forT2,0.8f,1.2f,0.2f,6,9);
+         customMass01To5forT2[9] = "1.5";
+         customMass01To5forT2[10] = "1.7";
+         customMass01To5forT2[11] = "2.0";
+         customMass01To5forT2[12] = "2.5";
+         createArray(customMass01To5forT2,3.0f,5.0f,1.0f,13,16);
 
 
-         customMass05To10ForT3 = new String[27];
+         customMass05To10ForT3 = new String[24];
          createArray(customMass05To10ForT3,0.5f,1.6f,0.1f,0,11);
-         createArray(customMass05To10ForT3,1.8f,2.2f,0.2f,12,14);
-         createArray(customMass05To10ForT3,2.5f,4.0f,0.5f,15,19);
-         createArray(customMass05To10ForT3,5.0f,10.0f,1.0f,20,25);
+         createArray(customMass05To10ForT3,1.8f,2.2f,0.2f,11,14);
+         createArray(customMass05To10ForT3,2.5f,4.0f,0.5f,14,18);
+         createArray(customMass05To10ForT3,5.0f,10.0f,1.0f,18,24);
 
-        mass1To60 = new String[19];
+        mass1To60 = new String[18];
         createArray(mass1To60,1,10,1,0,10);
-        createArray(mass1To60,15,40,5,11,16);
-        createArray(mass1To60,50,60,10,17,18);
+        createArray(mass1To60,15,40,5,10,16);
+        createArray(mass1To60,50,60,10,16,18);
 
 
     }
+    private void checkOnOffSmartMode(){
+        if (mode == 0||mode==1||mode==2)
+            textButtonSmartTime.setEnabled(false);
+
+        else
+            textButtonSmartTime.setEnabled(true);
+
+    }
 }
+
+
+
